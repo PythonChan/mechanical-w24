@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace W24
+﻿namespace W24
 {
     internal class RailObject
     {
@@ -50,6 +44,10 @@ namespace W24
                 if (State == ExpectedState)
                 {
                     StateAsExpected = true;
+                }
+                else
+                {
+                    StateAsExpected = false;
                 }
             }
         }

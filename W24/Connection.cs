@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace W24
 {
@@ -29,11 +28,14 @@ namespace W24
                 listener.Start();
                 IsConnected = true;
 
-                foreach (RailObject railObject in Program.RailObjectList)
+                foreach (List<RailObject> list in Program.RailObjectLists)
                 {
-                    if (railObject.State == null)
+                    foreach (RailObject railObject in list)
                     {
-                        Send("GetState");
+                        if (railObject.State == null)
+                        {
+                            Send("GetState");
+                        }
                     }
                 }
 

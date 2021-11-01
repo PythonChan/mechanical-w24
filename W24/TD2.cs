@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Windows;
 
 namespace W24
 {
@@ -77,11 +76,14 @@ namespace W24
             }
             else
             {
-                var railObject = Program.RailObjectList.Find(x => x.Name == name);
-
-                if (railObject != null)
+                foreach (List<RailObject> list in Program.RailObjectLists)
                 {
-                    railObject.ChangeState(response);
+                    var railObject = list.Find(x => x.Name == name);
+
+                    if (railObject != null)
+                    {
+                        railObject.ChangeState(response);
+                    }
                 }
             }
         }

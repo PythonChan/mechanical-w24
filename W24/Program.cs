@@ -6,23 +6,22 @@ namespace W24
 {
     internal class Program
     {
-        public static List<RailObject> RailObjectList;
+        public static List<List<RailObject>> RailObjectLists;
 
+        [STAThread]
         static async Task Main(string[] args)
         {
-            RailObject r104 = new("MKsA_104", "-");
-            RailObject r105 = new("MKsA_105", "-");
-            RailObject B = new("MKsA_B", "S13");
+            //RailObject r104 = new("MKsA_104", "-");
+            //RailObject r105 = new("MKsA_105", "-");
+            //RailObject B = new("MKsA_B", "S13");
 
-            RailObjectList = new List<RailObject>
-            {
-                r104,
-                r105,
-                B
-            };
+            RailObjectLists = new();
 
-            //Console.WriteLine("port: ");
-            //Connection.port = int.Parse(Console.ReadLine());
+            Console.WriteLine("Nazwa pliku: ");
+            FileReader.Read(Console.ReadLine());
+
+            Console.WriteLine("port: ");
+            Connection.port = int.Parse(Console.ReadLine());
             Connection.Connect();
 
             while (true)
@@ -34,26 +33,30 @@ namespace W24
                     continue;
                 }
 
-                bool allTrue = true;
-                string semafor = "";
-
-                foreach (RailObject railObject in RailObjectList)
+                foreach (List<RailObject> list in RailObjectLists)
                 {
-                    if (!railObject.StateAsExpected || railObject.W24)
+                    bool allTrue = true;
+                    string semafor = "";
+
+                    foreach (RailObject railObject in list)
                     {
-                        allTrue = false;
-                        break;
+                        if (!railObject.StateAsExpected || railObject.W24)
+                        {
+                            allTrue = false;
+                            break;
+                        }
+
+                        if (railObject.ExpectedState is not "-" and not "+")
+                        {
+                            semafor = railObject.Name;
+                        }
                     }
 
-                    if (railObject.ExpectedState is not "-" and not "+")
+                    if (allTrue)
                     {
-                        semafor = railObject.Name;
+                        Connection.Send($"{semafor}:W24");
+                        Console.WriteLine($"Ułożono przebieg na {semafor}");
                     }
-                }
-
-                if (allTrue)
-                {
-                    Connection.Send($"{semafor}:W24");
                 }
             }
         }
