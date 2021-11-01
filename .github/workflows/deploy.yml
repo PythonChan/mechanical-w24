@@ -18,7 +18,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet publish W24.sln --output package --no-self-contained --runtime win-x64
+      run: dotnet publish W24.sln --output package --runtime win-x64 -p:PublishSingleFile=true --self-contained false
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Release name generation v1
