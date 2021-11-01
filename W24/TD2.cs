@@ -59,6 +59,8 @@ namespace W24
 
         public static void MessageReceived(string msg)
         {
+            receiveCounter = 0;
+
             if (msg.StartsWith("Ready: "))
             {
                 msg = msg.Replace("Ready: ", "");
