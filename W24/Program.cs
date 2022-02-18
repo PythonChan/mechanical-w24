@@ -11,15 +11,27 @@ namespace W24
         [STAThread]
         static async Task Main(string[] args)
         {
-            //RailObject r104 = new("MKsA_104", "-");
-            //RailObject r105 = new("MKsA_105", "-");
-            //RailObject B = new("MKsA_B", "S13");
-
             RailObjectLists = new();
+            try
+            {
+                FileReader.Read("przebiegi.txt");
+            }
+            catch
+            {
+                Console.WriteLine("Plik przebiegi.txt nie istnieje w katalogu programu");
+                Console.WriteLine("Podaj nazwę pliku: ");
 
-            Console.WriteLine("Nazwa pliku: ");
-            FileReader.Read(Console.ReadLine());
-
+                try
+                {
+                    FileReader.Read(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Plik nie istnieje. Naciśnij dowolny klawisz aby zamknąć program");
+                    Console.ReadKey();
+                    return;
+                }
+            }
             Console.WriteLine("port: ");
             Connection.port = int.Parse(Console.ReadLine());
             Connection.Connect();
@@ -30,6 +42,7 @@ namespace W24
 
                 if (!Connection.IsConnected)
                 {
+                    Console.WriteLine("próba nawiązania połączenia...");
                     continue;
                 }
 
